@@ -1,0 +1,8 @@
+first step -> created a user pool in cognito(zuraid)
+second step -> created a basic sign up(zurasignup) and login(zuralogin) page lambda functions
+third step -> created an api gateway and integrated lambda function to that api
+fourth step -> created a client 0auth in google cloud(web)
+fifth step -> created a google signup lambda function(zuragooglelogin) and integrated it with signup page and cognito.
+sixth step -> created a google login lambda(zuragoogle-login) function but not working.
+
+
