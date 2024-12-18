@@ -28,6 +28,8 @@ function Login() {
             const data = await response.json();
 
             if (response.ok) {
+                localStorage.setItem("id_token", data.idToken);
+                localStorage.setItem("access_token", data.accessToken);
                 sessionStorage.setItem("jwtToken", data.accessToken); // Store the access token
                 setMessage("Login successful!");
 
