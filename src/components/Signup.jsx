@@ -62,15 +62,32 @@ function Signup() {
         window.location.href = `${googleSignupURL}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;
     };
 
-    // Handle OAuth Callbacks for Google
+    // Handle Signup with Microsoft
+    const handleMicrosoftSignup = async () => {
+        console.log("Initiating Microsoft signup");
+
+        const microsoftSignupURL = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
+        const clientId = "b11c6bad-5239-4f25-8c65-9470e22953c5"; // Replace with your Microsoft app's client ID
+        const redirectUri = "https://abhisheksagar.xyz/homepage"; // Replace with your frontend's redirect URI
+        const scope = "openid email profile";
+
+        window.location.href = `${microsoftSignupURL}?client_id=${clientId}&redirect_uri=${encodeURIComponent(
+            redirectUri
+        )}&response_type=code&scope=${encodeURIComponent(scope)}`;
+    };
+
+    // Handle OAuth Callbacks for Google and Microsoft
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get("code"); // For Google
+        const code = urlParams.get("code");
 
-        const googleUsername = sessionStorage.getItem("googleUsername");
-
-        if (code && googleUsername) {
-            completeOAuthSignup("google", { code, username: googleUsername });
+        if (code) {
+            const googleUsername = sessionStorage.getItem("googleUsername");
+            if (googleUsername) {
+                completeOAuthSignup("google", { code, username: googleUsername });
+            } else {
+                completeOAuthSignup("microsoft", { code });
+            }
         }
     }, []);
 
@@ -147,6 +164,11 @@ function Signup() {
                     />
                     <button onClick={handleGoogleSignup} disabled={isLoading}>
                         {isLoading ? "Redirecting..." : "Signup with Google"}
+                    </button>
+
+                    {/* Microsoft Signup */}
+                    <button onClick={handleMicrosoftSignup} disabled={isLoading}>
+                        {isLoading ? "Redirecting..." : "Signup with Microsoft"}
                     </button>
                 </div>
             ) : (
