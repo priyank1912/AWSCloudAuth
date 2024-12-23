@@ -8,7 +8,6 @@ function Signup() {
         confirmationCode: "",
     });
     const [googleUsername, setGoogleUsername] = useState(""); // Preferred username for Google
-    const [twitterUsername, setTwitterUsername] = useState(""); // Preferred username for Twitter
     const [message, setMessage] = useState("");
     const [isConfirmationStep, setIsConfirmationStep] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -63,52 +62,15 @@ function Signup() {
         window.location.href = `${googleSignupURL}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;
     };
 
-    // Handle Signup with Twitter
-    const handleTwitterSignup = async () => {
-        if (!twitterUsername) {
-            setMessage("Please enter a preferred username for Twitter signup.");
-            return;
-        }
-
-        console.log("Initiating Twitter signup for username:", twitterUsername);
-
-        try {
-            // Fetch the Twitter OAuth request token from backend
-            const response = await fetch(
-                "https://5u7fue8oo3.execute-api.ap-south-1.amazonaws.com/twitter-request-token",
-                { method: "POST" }
-            );
-            const data = await response.json();
-            console.log("Twitter Request Token:", data);
-
-            if (response.ok) {
-                const { oauth_token } = data;
-                sessionStorage.setItem("twitterUsername", twitterUsername);
-                // Redirect to Twitter authorization URL
-                window.location.href = `https://api.twitter.com/oauth/authenticate?oauth_token=${oauth_token}`;
-            } else {
-                setMessage(`Error: ${data.error}`);
-            }
-        } catch (error) {
-            console.error("Error initiating Twitter signup:", error);
-            setMessage(`Error: ${error.message}`);
-        }
-    };
-
-    // Handle OAuth Callbacks for Google and Twitter
+    // Handle OAuth Callbacks for Google
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get("code"); // For Google
-        const oauthToken = urlParams.get("oauth_token"); // For Twitter
-        const oauthVerifier = urlParams.get("oauth_verifier"); // For Twitter
 
         const googleUsername = sessionStorage.getItem("googleUsername");
-        const twitterUsername = sessionStorage.getItem("twitterUsername");
 
         if (code && googleUsername) {
             completeOAuthSignup("google", { code, username: googleUsername });
-        } else if (oauthToken && oauthVerifier && twitterUsername) {
-            completeOAuthSignup("twitter", { oauthToken, oauthVerifier, username: twitterUsername });
         }
     }, []);
 
@@ -185,18 +147,6 @@ function Signup() {
                     />
                     <button onClick={handleGoogleSignup} disabled={isLoading}>
                         {isLoading ? "Redirecting..." : "Signup with Google"}
-                    </button>
-
-                    <hr />
-                    {/* Twitter Signup */}
-                    <input
-                        type="text"
-                        placeholder="Preferred Username for Twitter Signup"
-                        value={twitterUsername}
-                        onChange={(e) => setTwitterUsername(e.target.value)}
-                    />
-                    <button onClick={handleTwitterSignup} disabled={isLoading}>
-                        {isLoading ? "Redirecting..." : "Signup with Twitter"}
                     </button>
                 </div>
             ) : (
