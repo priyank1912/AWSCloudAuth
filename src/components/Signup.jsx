@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 
 function Signup() {
     const [formData, setFormData] = useState({
-        username: "",
+        zuraId: "",
         email: "",
         password: "",
         confirmationCode: "",
     });
-    const [googleUsername, setGoogleUsername] = useState(""); // Preferred username for Google
     const [message, setMessage] = useState("");
     const [isConfirmationStep, setIsConfirmationStep] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -15,13 +14,17 @@ function Signup() {
     // Handle manual signup
     const handleSignup = async () => {
         console.log("Starting manual signup with data:", formData);
+        if (!formData.zuraId) {
+            setMessage("Zura ID is required.");
+            return;
+        }
         setIsLoading(true);
         try {
             const response = await fetch("https://5u7fue8oo3.execute-api.ap-south-1.amazonaws.com/signup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    username: formData.username,
+                    username: formData.zuraId, // Correctly mapping zuraId to username
                     password: formData.password,
                     email: formData.email,
                 }),
@@ -44,21 +47,17 @@ function Signup() {
         }
     };
 
+
     // Handle Signup with Google
     const handleGoogleSignup = async () => {
-        if (!googleUsername) {
-            setMessage("Please enter a preferred username for Google signup.");
-            return;
-        }
-
-        console.log("Initiating Google signup for username:", googleUsername);
+        console.log("Initiating Google signup for zuraId:", formData.zuraId);
 
         const googleSignupURL = "https://accounts.google.com/o/oauth2/v2/auth";
         const clientId = "543378407550-st4cmipset8ocjingv3h037dlsmbfg3c.apps.googleusercontent.com";
         const redirectUri = "https://abhisheksagar.xyz/homepage";
         const scope = "openid email profile";
 
-        sessionStorage.setItem("googleUsername", googleUsername);
+        sessionStorage.setItem("zuraId", formData.zuraId);
         window.location.href = `${googleSignupURL}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;
     };
 
@@ -67,8 +66,8 @@ function Signup() {
         console.log("Initiating Microsoft signup");
 
         const microsoftSignupURL = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
-        const clientId = "b11c6bad-5239-4f25-8c65-9470e22953c5"; // Replace with your Microsoft app's client ID
-        const redirectUri = "https://abhisheksagar.xyz/homepage"; // Replace with your frontend's redirect URI
+        const clientId = "b11c6bad-5239-4f25-8c65-9470e22953c5";
+        const redirectUri = "https://abhisheksagar.xyz/homepage";
         const scope = "openid email profile";
 
         window.location.href = `${microsoftSignupURL}?client_id=${clientId}&redirect_uri=${encodeURIComponent(
@@ -82,9 +81,9 @@ function Signup() {
         const code = urlParams.get("code");
 
         if (code) {
-            const googleUsername = sessionStorage.getItem("googleUsername");
-            if (googleUsername) {
-                completeOAuthSignup("google", { code, username: googleUsername });
+            const zuraId = sessionStorage.getItem("zuraId");
+            if (zuraId) {
+                completeOAuthSignup("google", { code, username: zuraId });
             } else {
                 completeOAuthSignup("microsoft", { code });
             }
@@ -133,10 +132,11 @@ function Signup() {
                     >
                         <input
                             type="text"
-                            placeholder="Username"
-                            value={formData.username}
-                            onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                            placeholder="Zura ID"
+                            value={formData.zuraId}
+                            onChange={(e) => setFormData({ ...formData, zuraId: e.target.value })}
                         />
+
                         <input
                             type="email"
                             placeholder="Email"
@@ -156,12 +156,6 @@ function Signup() {
 
                     <hr />
                     {/* Google Signup */}
-                    <input
-                        type="text"
-                        placeholder="Preferred Username for Google Signup"
-                        value={googleUsername}
-                        onChange={(e) => setGoogleUsername(e.target.value)}
-                    />
                     <button onClick={handleGoogleSignup} disabled={isLoading}>
                         {isLoading ? "Redirecting..." : "Signup with Google"}
                     </button>
