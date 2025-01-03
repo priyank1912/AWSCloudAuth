@@ -45,10 +45,10 @@ function HomePage() {
 
     // Function to handle Google OAuth callback
     const handleGoogleCallback = async (code) => {
-        const userId = localStorage.getItem("userId"); // Retrieve userId from storage or state
+        const zuraId = localStorage.getItem("zuraId"); // Retrieve userId from storage or state
 
-        if (!userId) {
-            setMessage("User ID is missing. Please log in again.");
+        if (!zuraId) {
+            setMessage("zura ID is missing. Please log in again.");
             return;
         }
 
@@ -56,7 +56,7 @@ function HomePage() {
             const response = await fetch("https://https://5u7fue8oo3.execute-api.ap-south-1.amazonaws.com/connect-google", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ code, userId }),
+                body: JSON.stringify({ code, zuraId }),
             });
 
             const data = await response.json();
