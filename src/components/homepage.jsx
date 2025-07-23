@@ -1,12 +1,32 @@
 import React, { useEffect, useState } from "react";
+import { Auth } from "aws-amplify";
 
 function HomePage() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [message, setMessage] = useState("");
+    const [userProfile, setUserProfile] = useState(null);
 
     useEffect(() => {
-        // Check user authentication
-        setIsAuthenticated(checkAuthentication());
+        // Check user authentication and fetch profile data
+        const authenticateAndFetchProfile = async () => {
+            const isAuth = checkAuthentication();
+            setIsAuthenticated(isAuth);
+
+            if (isAuth) {
+                try {
+                    const user = await Auth.currentAuthenticatedUser();
+                    setUserProfile({
+                        username: user.username,
+                        email: user.attributes.email,
+                        name: user.attributes.name || "Guest", // Ensure this attribute is available in Cognito
+                    });
+                } catch (error) {
+                    console.error("Error fetching user profile:", error);
+                }
+            }
+        };
+
+        authenticateAndFetchProfile();
 
         // Handle OAuth callback to process Google "code"
         const urlParams = new URLSearchParams(window.location.search);
@@ -53,7 +73,11 @@ function HomePage() {
         }
 
         try {
+<<<<<<< HEAD
             const response = await fetch("Connect google api link", {
+=======
+            const response = await fetch("https://5u7fue8oo3.execute-api.ap-south-1.amazonaws.com/connect-google", {
+>>>>>>> eebf0f742264dd5088afe78c8256d57111096384
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ code, UserId }),
@@ -76,15 +100,22 @@ function HomePage() {
     return (
         <div>
             <h1>Welcome to the Home Page!</h1>
-            <p>This is the landing page after a successful login.</p>
-
             {isAuthenticated ? (
                 <>
+                    {userProfile ? (
+                        <div>
+                            <h2>Welcome, {userProfile.name}!</h2>
+                            <p>Email: {userProfile.email}</p>
+                            <p>Username: {userProfile.username}</p>
+                        </div>
+                    ) : (
+                        <p>Loading profile...</p>
+                    )}
                     <button onClick={handleConnectWithGoogle}>Connect with Google</button>
                     <p>{message}</p>
                 </>
             ) : (
-                <p>Please log in to connect your Google account.</p>
+                <p>Please log in to view your profile and connect your Google account.</p>
             )}
         </div>
     );

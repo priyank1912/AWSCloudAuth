@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 function Login() {
     const [formData, setFormData] = useState({
-        username: "",
+        zuraId: "",
         password: "",
     });
     const [message, setMessage] = useState("");
@@ -20,7 +20,11 @@ function Login() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
+<<<<<<< HEAD
                     zuraId: formData.username,
+=======
+                    username: formData.zuraId,
+>>>>>>> eebf0f742264dd5088afe78c8256d57111096384
                     password: formData.password,
                 }),
             });
