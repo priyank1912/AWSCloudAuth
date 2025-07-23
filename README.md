@@ -39,3 +39,30 @@ A production-ready, fully serverless authentication system leveraging AWS servic
 
 ---
 
+## 🚀 How to Deploy
+
+> 💡 You can deploy this using AWS SAM, Serverless Framework, or manually via AWS Console
+
+### 1. Set up Cognito
+- Create a **User Pool** with username/email sign-in
+- Add **App Clients** and **Federated Identity Providers** (Google, Microsoft)
+
+### 2. Create DynamoDB Table
+- Table name: `Users`
+- Primary key: `userId`
+
+### 3. Deploy Lambda Functions
+- Use the runtime of your choice (Node.js / Python / .NET)
+- Assign proper execution roles with access to Cognito and DynamoDB
+
+### 4. Configure API Gateway
+- Connect REST endpoints (`/signup`, `/login`, `/logout`) to Lambda
+
+---
+
+## 📊 Example API Calls
+
+```bash
+curl -X POST https://your-api.com/signup \
+  -H "Content-Type: application/json" \
+  -d '{"Userid":"user", "email": "user@example.com", "password": "MySecret123"}'
