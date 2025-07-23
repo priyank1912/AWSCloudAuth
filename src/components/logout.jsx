@@ -9,7 +9,7 @@ function Logout() {
 
                 if (token) {
                     // Call the logout Lambda function
-                    const response = await fetch("https://5u7fue8oo3.execute-api.ap-south-1.amazonaws.com/logout", {
+                    const response = await fetch("Enter your logout api link", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",

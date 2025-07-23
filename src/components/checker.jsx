@@ -29,7 +29,7 @@ const UsernameChecker = () => {
 
         try {
             // Make API call to check username availability
-            const response = await axios.get('https://5u7fue8oo3.execute-api.ap-south-1.amazonaws.com/check-username', {
+            const response = await axios.get('check-username api', {
                 params: { username },
             });
 

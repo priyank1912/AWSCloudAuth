@@ -36,8 +36,8 @@ function HomePage() {
     // Function to redirect for Google OAuth flow
     const handleConnectWithGoogle = () => {
         const googleAuthURL = "https://accounts.google.com/o/oauth2/v2/auth";
-        const googleClientId = "543378407550-st4cmipset8ocjingv3h037dlsmbfg3c.apps.googleusercontent.com";
-        const redirectUri = "https://abhisheksagar.xyz/homepage";
+        const googleClientId = "Add this in .env file";
+        const redirectUri = "Add this in .env file";
         const scope = "openid email profile";
 
         window.location.href = `${googleAuthURL}?client_id=${googleClientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;
@@ -45,18 +45,18 @@ function HomePage() {
 
     // Function to handle Google OAuth callback
     const handleGoogleCallback = async (code) => {
-        const zuraId = localStorage.getItem("zuraId"); // Retrieve userId from storage or state
+        const UserId = localStorage.getItem("userId"); // Retrieve userId from storage or state
 
         if (!zuraId) {
-            setMessage("zura ID is missing. Please log in again.");
+            setMessage("ID is missing. Please log in again.");
             return;
         }
 
         try {
-            const response = await fetch("https://https://5u7fue8oo3.execute-api.ap-south-1.amazonaws.com/connect-google", {
+            const response = await fetch("Connect google api link", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ code, zuraId }),
+                body: JSON.stringify({ code, UserId }),
             });
 
             const data = await response.json();

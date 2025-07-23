@@ -14,7 +14,7 @@ function Login() {
     const handleLogin = async () => {
         setIsLoading(true);
         try {
-            const response = await fetch("https://5u7fue8oo3.execute-api.ap-south-1.amazonaws.com/login", {
+            const response = await fetch("standard login api link", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -50,8 +50,8 @@ function Login() {
     const handleGoogleLogin = () => {
         console.log("Redirecting to Google for authentication...");
         const googleLoginURL = "https://accounts.google.com/o/oauth2/v2/auth";
-        const clientId = "543378407550-st4cmipset8ocjingv3h037dlsmbfg3c.apps.googleusercontent.com";
-        const redirectUri = "https://abhisheksagar.xyz/homepage";
+        const clientId = "Enter your Google Client ID here";
+        const redirectUri = "Enter your redirect URI here";
         const scope = "openid email profile";
 
         window.location.href = `${googleLoginURL}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;
@@ -69,7 +69,7 @@ function Login() {
                 setIsLoading(true);
                 try {
                     const response = await fetch(
-                        "https://5u7fue8oo3.execute-api.ap-south-1.amazonaws.com/google-login",
+                        "Enter your Google login API link here",
                         {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },

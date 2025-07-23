@@ -17,7 +17,7 @@ function Signup() {
         console.log("Starting manual signup with data:", formData);
         setIsLoading(true);
         try {
-            const response = await fetch("https://5u7fue8oo3.execute-api.ap-south-1.amazonaws.com/signup", {
+            const response = await fetch("Enter your signup API link here", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -54,8 +54,8 @@ function Signup() {
         console.log("Initiating Google signup for username:", googleUsername);
 
         const googleSignupURL = "https://accounts.google.com/o/oauth2/v2/auth";
-        const clientId = "543378407550-st4cmipset8ocjingv3h037dlsmbfg3c.apps.googleusercontent.com";
-        const redirectUri = "https://abhisheksagar.xyz/homepage";
+        const clientId = "Add this in .env file";
+        const redirectUri = "Add this in .env file";
         const scope = "openid email profile";
 
         sessionStorage.setItem("googleUsername", googleUsername);
@@ -78,7 +78,7 @@ function Signup() {
         setIsLoading(true);
         try {
             const response = await fetch(
-                `https://5u7fue8oo3.execute-api.ap-south-1.amazonaws.com/${provider}-signup`,
+                `Enter your API gatway link/${provider}-signup`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
