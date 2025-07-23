@@ -39,5 +39,3 @@ A production-ready, fully serverless authentication system leveraging AWS servic
 
 ---
 
-## 📁 Folder Structure
-
